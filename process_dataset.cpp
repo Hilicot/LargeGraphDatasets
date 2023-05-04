@@ -4,11 +4,12 @@
 #include <random>
 #include <chrono>
 #include <sys/stat.h>
+#include <sstream>
 #include "Graph.h"
 
 #define VERBOSE 1
 
-#define SAMPLING true
+#define SAMPLING false
 #define N 20000
 #define CONNECTIVITY 5.0 // define average number of edges per vertex (if the graph is less connected than this, don't sample edges)
 #define OFFSET_STDEV 5.0 // define percentual variation for N and E across the 2 graphs
@@ -34,8 +35,14 @@ Graph readGraphFromFile(string filename) {
             cerr << "Error: invalid file format" << endl;
             exit(1);
         }
-    V = stoi(line.substr(line.find("Nodes:") + 7));
-    E = stoi(line.substr(line.find("Edges:") + 7));
+    stringstream ss (line);
+    string tmp_str;
+    getline(ss, tmp_str, ':');
+    getline(ss, tmp_str, ' ');
+    V = stoi(tmp_str);
+    getline(ss, tmp_str, ':');
+    getline(ss, tmp_str, ' ');
+    E = stoi(tmp_str);
     getline(infile, line);
 
     // read edges
@@ -97,13 +104,17 @@ void saveGraphToFile(Graph G, string filename) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        cerr << "Usage: " << argv[0] << " input_file output_folder" << endl;
+    if (argc < 3) {
+        cerr << "Usage: " << argv[0] << " input_file output_folder [counter]" << endl;
         exit(1);
     }
 
     string input_file = argv[1];
     string output_folder = argv[2];
+
+    // read graph
+    std::cout << "Reading " << input_file << std::endl;
+    Graph G = readGraphFromFile(input_file);
 
     // Extract the filename from the input file path
     size_t last_slash_idx = input_file.find_last_of("/\\");
@@ -112,13 +123,14 @@ int main(int argc, char* argv[]) {
     // Remove the file extension from the filename
     size_t last_dot_idx = filename.rfind('.');
     string basename = (last_dot_idx == string::npos) ? filename : filename.substr(0, last_dot_idx);
+    if(basename.starts_with("as")){
+        if(argc < 4)
+            cerr << "must provide counter!" << endl;
+        basename = "snap_as_s"+ to_string(G.getNumVertices()) + ".A" + argv[3];
+    }
 
     // Construct the output file path
     string output_file = output_folder + "/" + basename;
-
-    // read graph
-    std::cout << "Reading " << input_file << std::endl;
-    Graph G = readGraphFromFile(input_file);
 
     if (SAMPLING && G.getNumVertices() > N) {
         // sample graph twice to create pair

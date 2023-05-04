@@ -5,7 +5,7 @@
 
 Graph::Graph(int V, int E) {
     this->V = V;
-    this->E = E;
+    this->E = 0;
     adj.resize(V);
 }
 
@@ -24,6 +24,7 @@ void Graph::addEdge(int u, int v) {
     // insert edge
     auto it = std::lower_bound(adj[u].begin(), adj[u].end(), v);
     adj[u].insert(it, v);
+    this->E++;
 }
 
 int Graph::getNumVertices() const {
