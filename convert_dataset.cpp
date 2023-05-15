@@ -7,6 +7,7 @@
 #include "Graph.h"
 
 #define VERBOSE 1
+#define MIN_NODES 150  // don't convert graphs with less than MIN_NODES nodes
 
 #define SAMPLING false
 #define N 100000
@@ -130,6 +131,11 @@ int main(int argc, char *argv[]) {
     // read graph
     std::cout << "Reading " << input_file << std::endl;
     Graph G = readGraphFromFile(input_file);
+
+    if (G.getNumVertices() < MIN_NODES) {
+        std::cout << "Graph has less than " << MIN_NODES << " nodes, skipping" << std::endl;
+        return 0;
+    }
 
     if (SAMPLING && G.getNumVertices() > N) {
         // sample graph twice to create pair
