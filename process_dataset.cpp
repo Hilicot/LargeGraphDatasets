@@ -9,6 +9,7 @@
 
 #define VERBOSE 1
 
+#define MIN_NODES 150  // don't convert graphs with less than MIN_NODES nodes
 #define SAMPLING false
 #define N 20000
 #define CONNECTIVITY 5.0 // define average number of edges per vertex (if the graph is less connected than this, don't sample edges)
@@ -115,6 +116,11 @@ int main(int argc, char* argv[]) {
     // read graph
     std::cout << "Reading " << input_file << std::endl;
     Graph G = readGraphFromFile(input_file);
+
+    if (G.getNumVertices() < MIN_NODES) {
+        std::cout << "Graph has less than " << MIN_NODES << " nodes, skipping" << std::endl;
+        return 0;
+    }
 
     // Extract the filename from the input file path
     size_t last_slash_idx = input_file.find_last_of("/\\");
