@@ -2,7 +2,7 @@
 
 out_folder="processed/ascii"
 
-for dataset in raw/* ; do
+for dataset in raw/as* ; do
     let counter=counter+1
     #if [ $counter -le 5 ]; then
         #echo "Skipping# $pair"
