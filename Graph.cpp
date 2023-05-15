@@ -9,6 +9,12 @@ Graph::Graph(int V, int E) {
     adj.resize(V);
 }
 
+int Graph::addNode(){
+    V++;
+    adj.resize(V);
+    return V-1;
+}
+
 void Graph::addEdge(int u, int v) {
     // order vertices
     if (v < u) {
@@ -24,6 +30,8 @@ void Graph::addEdge(int u, int v) {
     // insert edge
     auto it = std::lower_bound(adj[u].begin(), adj[u].end(), v);
     adj[u].insert(it, v);
+
+    // update number of edges
     this->E++;
 }
 
@@ -33,6 +41,17 @@ int Graph::getNumVertices() const {
 
 int Graph::getNumEdges() const {
     return E;
+}
+
+int Graph::get(const int u, const int v) const {
+    if (u < this->V) {
+        for (auto &edge : this->adj[u]) {
+            if (static_cast<int>(edge) == v) {
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 vector<int> Graph::getAdjacentVertices(int v) {

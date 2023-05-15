@@ -24,7 +24,9 @@ private:
 
 class Graph {
 public:
-    Graph(int V, int E) ;
+    Graph(int V, int E);
+
+    int addNode();
 
     void addEdge(int u, int v);
 
@@ -32,9 +34,12 @@ public:
 
     int getNumEdges() const;
 
+    int get(const int u, const int v) const;
+
     vector<int> getAdjacentVertices(int v);
 
     Graph sample(int N, int E) const;
+
 
 private:
     int V;
