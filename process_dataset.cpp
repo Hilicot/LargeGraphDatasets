@@ -16,8 +16,8 @@
 #define OFFSET_STDEV 5.0 // define percentual variation for N and E across the 2 graphs
 
 #define GENERATE_SYNTHETIC_PAIR true
-#define ADDED_NODES_PROB 5 // %     (x/100)
-#define ADDED_EDGES_PROB 10 // %*%   (x/10000)
+#define ADDED_NODES_PROB 10 // %     (x/100)
+#define ADDED_EDGES_PROB 20 // %*%   (x/10000)
 
 using namespace std;
 
@@ -173,6 +173,7 @@ int main(int argc, char *argv[]) {
         Graph G0 = G;
         Graph G1 = G;
 
+        /*
         // add edges to both graphs
         std::cout << "Adding edges to both graphs" << std::endl;
         for (int i = 0; i < G.getNumVertices(); i++) {
@@ -185,7 +186,7 @@ int main(int argc, char *argv[]) {
                         G1.addEdge(i, j);
             }
         }
-
+*/
         // add nodes to both graphs
         std::cout << "Adding nodes to both graphs" << std::endl;
         for (int i = 0; i < G.getNumVertices(); i++) {
@@ -193,8 +194,9 @@ int main(int argc, char *argv[]) {
                 int new_n = G0.addNode();
                 G0.addEdge(i, new_n);
                 for (int j = 0; j < G0.getNumVertices() - 1; j++)
-                    if (j != i && rand() % 10000 < ADDED_EDGES_PROB)
+                    if (j != i && rand() % 10000 < ADDED_EDGES_PROB) {
                         G0.addEdge(new_n, j);
+                    }
             } else if (rand() % 100 < ADDED_NODES_PROB) {
                 int new_n = G1.addNode();
                 G1.addEdge(i, new_n);
