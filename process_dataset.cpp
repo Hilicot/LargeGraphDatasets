@@ -212,6 +212,12 @@ int main(int argc, char *argv[]) {
         saveGraphToFile(G0, output_folder + "/g1.txt");
         std::cout << "Saving " << output_folder << "/g2.txt" << std::endl;
         saveGraphToFile(G1, output_folder + "/g2.txt");
+        // save size of G to file
+        std::cout << "Saving " << output_folder << "/solution.txt" << std::endl;
+        std::ofstream outfile;
+        outfile.open(output_folder + "/solution.txt");
+        outfile << G.getNumVertices() << " " << G.getNumEdges() << endl;
+        outfile.close();
     } else {
 // write original graph
         std::cout << "Saving " << output_file <<
