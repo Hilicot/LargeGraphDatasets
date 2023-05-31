@@ -1,8 +1,8 @@
 #!/bin/bash
 
-out_folder="processed/ascii"
+out_folder="processed/syn_pairs"
 
-for dataset in raw/as* ; do
+for dataset in processed/ascii/snap_as* ; do
     let counter=counter+1
     #if [ $counter -le 5 ]; then
         #echo "Skipping# $pair"
